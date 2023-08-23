@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th {
+      border: none;
+      padding: 8px;
+      text-align: left;
+    }
+    td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registration Form</h2>
+<form id="registrationForm">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required><br><br>
+
+    <label for="email">Email ID:</label>
+    <input type="email" id="email" name="email" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob" required><br><br>
+
+    <label>
+      <input type="checkbox" name="terms" required>
+      I accept the terms and conditions
+    </label><br><br>
+
+    <button type="submit">Register</button>
+  </form>
+
+  <h2>Saved Data</h2>
+  <table id="savedData">
+    <tr>
+      <th>Name</th>
+      <th>Email ID</th>
+      <th>Password</th>
+      <th>Dob</th>
+      <th colspan="2">Accepted Terms</th>
+    </tr>
+  </table>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const registrationForm = document.getElementById("registrationForm");
+      const savedData = document.getElementById("savedData");
+
+      // Load previously saved data from Local Storage
+      const savedEntries = JSON.parse(localStorage.getItem("savedEntries")) || [];
+
+      // Populate the table with saved data
+      savedEntries.forEach(entry => {
+        const newRow = savedData.insertRow();
+        const nameCell = newRow.insertCell(0);
+        const emailCell = newRow.insertCell(1);
+        const passwordCell= newRow.insertCell(2);
+        const dobCell = newRow.insertCell(3);
+        const acceptedTermsCell = newRow.insertCell(4);
+
+        nameCell.textContent = entry.name;
+        emailCell.textContent = entry.email;
+        passwordCell.textContent = entry.password;
+        dobCell.textContent = entry.dob;
+        acceptedTermsCell.textContent = entry.acceptedTerms ? "True" : "False";
+      });
+
+      registrationForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const dob = document.getElementById("dob").value;
+        const acceptedTerms = document.querySelector('input[name="terms"]').checked;
+
+        // Add new entry to savedEntries array
+        savedEntries.push({ name, email, password, dob, acceptedTerms });
+        
+        // Save updated array to Local Storage
+        localStorage.setItem("savedEntries", JSON.stringify(savedEntries));
+
+        // Update the table
+        const newRow = savedData.insertRow();
+        const nameCell = newRow.insertCell(0);
+        const emailCell = newRow.insertCell(1);
+        const passwordCell= newRow.insertCell(2);
+        const dobCell = newRow.insertCell(3);
+        const acceptedTermsCell = newRow.insertCell(4);
+
+        nameCell.textContent = name;
+        emailCell.textContent = email;
+        passwordCell.textContent = password;
+        dobCell.textContent = dob;
+        acceptedTermsCell.textContent = acceptedTerms ? "True" : "False";
+
+        registrationForm.reset();
+      });
+    });
+  </script>
+</body>
+</html>
