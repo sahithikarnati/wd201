@@ -24,6 +24,7 @@ const todoList = () => {
     const dueLater = () => {
       // Write the date check condition here and return the array
       // of todo items that are due later accordingly.
+
     return all.filter((item) => item.dueDate==tomorrow);
 
     }
@@ -33,7 +34,10 @@ const todoList = () => {
       // as per the format given above.
       return list.map((item) => {
         const checkbox = item.completed ? '[x]' : '[ ]';
-        return `${checkbox} ${item.title} ${item.dueDate}`;
+        if(item.dueDate==yesterday || item.dueDate==tomorrow)
+           return `${checkbox} ${item.title} ${item.dueDate}`;
+        else
+        return `${checkbox} ${item.title}`;
       }).join('\n');
     }
   
